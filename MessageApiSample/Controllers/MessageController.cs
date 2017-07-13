@@ -16,8 +16,15 @@ namespace MessageApiSample.Controllers
         {
             try
             {
+                //驗證是否為LINE過來的訊息
+                if(!LineChannel.VaridateSignature(Request, "輸入你的 Channel Secret"))
+                {
+                    return BadRequest();
+                }
+
                 //建立channel物件 
                 LineChannel channel = new LineChannel("輸入你的 Channel Access Token");
+
                 //取得LINE POST過來的JSON資料
                 var rawdata = Request.Content.ReadAsStringAsync().Result;
                 //序列化成物件
